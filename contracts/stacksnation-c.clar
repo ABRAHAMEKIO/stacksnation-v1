@@ -16,7 +16,8 @@
 
 (define-data-var commision uint u10000)
 
-(define-constant admin (as-contract tx-sender))
+(define-constant admin tx-sender)
+(define-constant contract-owner (as-contract tx-sender))
 (define-data-var minimum-floor-price uint u20000)
 
 (define-data-var listing-id uint u0)
@@ -38,9 +39,19 @@
    (ok (map-get? listed-collections {nft-name: (contract-of nft-con),id: id}))
  )
 )
+;;private functions
 (define-private (check-owner (nft-con <nft-trait>) (nft-id uint))
   (contract-call? nft-con get-owner nft-id)
 )
+
+(define-private (transfer-back-to-owner (nft-con <nft-trait>) (id uint) (recipient principal))
+ (begin
+  (as-contract (contract-call? nft-con transfer id contract-owner recipient))
+ )
+)
+
+
+;;public functions
 (define-public (transfer-item (nft-con <nft-trait>) (id uint ) (sender principal) (recipient principal))
   (begin
   ;;#[filter(nft-con, amount, sender , recipient)]
@@ -48,24 +59,18 @@
   )
 )
 
-(define-private (transfer-back-to-owner (nft-con <nft-trait>) (id uint) (recipient principal))
- (begin
-  (as-contract (contract-call? nft-con transfer id (as-contract tx-sender) recipient))
- )
-)
-
 (define-public (list-item (nft-con <nft-trait>) (id uint) (name (string-ascii 28)) (desc (string-ascii 50)) (price uint) (floor-price uint) (amount uint))
  ;;#[filter(nft-con,id,artist, desc, floor-price, amount)]
  (let ((nft-owner (unwrap! (unwrap-panic (check-owner nft-con id)) err-not-owner)))
    (asserts! (> price (var-get minimum-floor-price)) err-low-price)
       (if (is-eq nft-owner tx-sender) 
-          (match  (unwrap-panic (transfer-item nft-con id nft-owner (as-contract tx-sender)))
+          (match  (unwrap-panic (transfer-item nft-con id nft-owner contract-owner))
              success
              (begin (map-set listed-collections {nft-name: (contract-of nft-con),id: id} { artist: nft-owner,descrption: desc,price: price,floor-price: floor-price,amount: amount,commision: (var-get commision)})
-             (ok (map-get? listed-collections {nft-name: (contract-of nft-con),id: id}))
+               (ok (map-get? listed-collections {nft-name: (contract-of nft-con),id: id}))
+             )
+           err err-transfer-failed
           )
-         err err-transfer-failed
-   )
         err-not-owner
      )
    
@@ -80,11 +85,11 @@
      success
       (begin 
         (map-delete listed-collections {nft-name: (contract-of nft),id: id})
-        (ok true)
+        (ok "Unlist successful")
       )
-    err err-transfer-failed
+     err err-transfer-failed
    )
-   
+
  )
 )
 
@@ -96,14 +101,14 @@
       (to-owner (- price to-contract)))
       ;;#[filter(nft-con, id, sender)]
      (match (stx-transfer? to-owner tx-sender (get artist get-list))
-       haha (match (stx-transfer? to-contract tx-sender (as-contract tx-sender)) 
+       haha (match (stx-transfer? to-contract tx-sender contract-owner) 
         contract-successful 
           (match (transfer-back-to-owner nft-con id tx-sender)
             success (begin 
                (map-delete listed-collections {nft-name: (contract-of nft-con),id: id})
-              (ok true)
+              (ok "Purchase successful")
            )
-           err3 err-failed
+           err3 err-not-owner
          )
          err2 err-transfer-failed
        )
@@ -122,7 +127,7 @@
      succeeded
       (begin  
        (map-delete listed-collections {nft-name: (contract-of nft-con),id: id})
-        (ok true)
+        (ok "Admin-unlist successful")
       )
     err err-failed
    ) 
