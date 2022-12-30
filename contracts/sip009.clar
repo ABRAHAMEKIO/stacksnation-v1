@@ -26,6 +26,7 @@
 )
 
 (define-public (transfer (token-id uint) (sender principal) (recipient principal))
+ ;;#[allow(unchecked_data)]
 	(begin
 		(asserts! (is-eq tx-sender sender) err-not-token-owner)
 		(nft-transfer? crypto-mash token-id sender recipient)
