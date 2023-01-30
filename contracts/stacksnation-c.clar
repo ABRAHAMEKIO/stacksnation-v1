@@ -74,8 +74,10 @@
       (if (is-eq nft-owner tx-sender) 
           (match  (unwrap-panic (transfer-item nft-con id nft-owner contract-owner))
              success
-             (begin (map-set listed-collections {nft-name: (contract-of nft-con),id: id} { artist: nft-owner,descrption: desc,price: price,floor-price: floor-price,amount: amount,commision: (var-get commision)})
-               (ok (map-get? listed-collections {nft-name: (contract-of nft-con),id: id}))
+             (begin (map-set listed-collections {nft-name: (contract-of nft-con),id: id} 
+                 {artist: nft-owner,descrption: desc,price: price,floor-price: floor-price,amount: amount,commision: (var-get commision)})
+               (print (map-get? listed-collections {nft-name: (contract-of nft-con),id: id}))
+               (ok "List successfull")
              )
            err err-transfer-failed
           )
