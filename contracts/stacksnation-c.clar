@@ -36,7 +36,8 @@
  }
 )
 
-;;
+;;Get-purchase-count
+;;get the amount of time a user has purchased an nft from that collection
 (define-read-only (get-purchase-count)
  (ok (var-get purchase-count))
 )
