@@ -7,11 +7,13 @@
 ;;transfer nft
 
 (use-trait nft-trait 'SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait.nft-trait)
+
 (define-constant err-low-price (err u100))
 (define-constant err-not-owner (err u200))
 (define-constant err-transfer-failed (err u300))
 (define-constant err-failed (err u400))
 (define-constant err-not-allowed (err u600))
+
 
 (define-data-var commision uint u10000)
 
@@ -21,7 +23,6 @@
 
 (define-data-var listing-id uint u0)
 (define-data-var purchase-count uint u0)
-
 
 
 (define-map listed-collections {nft-name: principal,id: uint}
@@ -35,18 +36,14 @@
  }
 )
 
-(define-public (get-listed-collections (nft-con <nft-trait>) (id uint))
- (begin
-   (ok (map-get? listed-collections {nft-name: (contract-of nft-con),id: id}))
- )
-)
+;;
 (define-read-only (get-purchase-count)
  (ok (var-get purchase-count))
 )
 
-;;private functions
 
-
+;;Transfer-back-to-owner
+;;smart contract can be able to transfer nft back to the owners
 (define-private (transfer-back-to-owner (nft-con <nft-trait>) (id uint) (recipient principal))
  (begin
   (as-contract (contract-call? nft-con transfer id contract-owner recipient))
@@ -54,17 +51,24 @@
 )
 
 
-;;public functions
+;;Get-listed-collections
+;;users can get a the list of listed collections
+(define-public (get-listed-collections (nft-con <nft-trait>) (id uint))
+ (begin
+   (ok (map-get? listed-collections {nft-name: (contract-of nft-con),id: id}))
+ )
+)
 
-;;transfer item
-;;users can be able to transfer nfts (items) to agiven recipient
+;;Transfer item
+;;users can be able to transfer nfts (items) to a given recipient
 (define-public (transfer-item (nft-con <nft-trait>) (id uint ) (sender principal) (recipient principal))
   (begin
   ;;#[allow(unchecked_data)]
      (ok (contract-call? nft-con transfer id sender recipient)) 
   )
 )
-;;check nft-owner
+
+;;Check nft-owner
 ;;users can be able to check the owner of an nft (item)
 (define-public (check-owner (nft-con <nft-trait>) (nft-id uint))
  ;;#[allow(unchecked_data)]
@@ -108,6 +112,7 @@
    )
  )
 )
+
 ;;Purchase-nft
 ;;when i mint code should keep track of amount of purchases 
 (define-public (purchase-nft (nft-con <nft-trait>) (id uint))
@@ -135,6 +140,7 @@
 )
 
 ;;Admin unlist
+;;the assigned admin can forcefully unlist the collect due to some complecations
 (define-public (admin-unlist (nft-con <nft-trait>) (id uint))
  (let ((get-list (unwrap-panic (map-get? listed-collections {nft-name: (contract-of nft-con),id: id}))))
   (if (is-eq tx-sender admin)
