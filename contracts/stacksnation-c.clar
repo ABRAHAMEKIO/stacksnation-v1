@@ -41,7 +41,7 @@
   (let ((get-onsale-data (map-get? On-sale {Id: id}))
 
        )
-       (map-set On-sale {Id: id} {name: name,id: id,price: price})
+       ;;(map-set On-sale {Id: id} {name: name,id: id,price: price})
   (ok "")
   )
 )
@@ -55,9 +55,9 @@
 )
 
 
-;;Get-listed-collections
+;;get-collections-by-id
 ;;users can get a the list of listed collections
-(define-public (get-listed-collections (nft-con <nft-trait>) (id (string-ascii 28)))
+(define-public (get-collections-by-id (nft-con <nft-trait>) (id (string-ascii 28)))
  (begin
    (ok (map-get? On-sale {Id: id}))
  )
@@ -135,14 +135,15 @@
       (to-owner (- price to-contract)))
       ;;#[allow(unchecked_data)]
      (match (stx-transfer? to-owner tx-sender (get artist get-list))
-       haha (match (stx-transfer? to-contract tx-sender contract-owner) 
-        contract-successful 
-          (match (transfer-back-to-owner nft-con item-id tx-sender)
-            success (begin 
-               (map-delete On-sale {Id: id})
-               (var-set purchase-count (+ (var-get purchase-count) u1))
-              (ok "Purchase successful")
-           )
+       start (match (stx-transfer? to-contract tx-sender contract-owner) 
+         contract-successful 
+           (match (transfer-back-to-owner nft-con item-id tx-sender)
+             success
+               (begin 
+                  (map-delete On-sale {Id: id})
+                  (var-set purchase-count (+ (var-get purchase-count) u1))
+                 (ok "Purchase successful")
+               )
            err3 err-not-owner
          )
          err2 err-transfer-failed
