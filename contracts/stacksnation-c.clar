@@ -41,6 +41,7 @@
   (let ((get-onsale-data (map-get? On-sale {Id: id}))
 
        )
+       (map-set On-sale {Id: id} {name: name,id: id,price: price})
   (ok "")
   )
 )
