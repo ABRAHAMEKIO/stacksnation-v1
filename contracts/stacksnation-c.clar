@@ -1,15 +1,14 @@
 ;; stacknsation nft marketplace-v1
 
 
-(use-trait nft-trait 'SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait.nft-trait)
+ (use-trait nft-trait 'SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait.nft-trait)
 
-(define-constant err-low-price (err u100))
-(define-constant err-not-owner (err u200))
-(define-constant err-transfer-failed (err u300))
-(define-constant err-failed (err u400))
-(define-constant err-unlisting-failed (err u500))
-(define-constant err-not-allowed (err u600))
-
+ (define-constant err-low-price (err u100))
+ (define-constant err-not-owner (err u200))
+ (define-constant err-transfer-failed (err u300))
+ (define-constant err-failed (err u400))
+ (define-constant err-unlisting-failed (err u500))
+ (define-constant err-not-allowed (err u600))
 
 (define-data-var commision uint u10000)
 
@@ -21,33 +20,32 @@
 (define-data-var purchase-count uint u0)
 
 
-(define-map On-sale {Id: (string-ascii 28)}
+
+(define-map On-sale {nft-name: principal,id: uint}
   {
-   name: (string-ascii 28),
    artist: principal,
-   descrption: (string-ascii 50),
+   description: (string-ascii 50),
    price: uint,
    commision: uint
  }
 )
 
-;;Get-purchase-count
-;;get the amount of time a user has purchased an nft from that collection
+(define-public (get-listed-collections (nft-con <nft-trait>) (id uint))
+ (begin
+   (ok (map-get? On-sale {nft-name: (contract-of nft-con),id: id}))
+ )
+)
 (define-read-only (get-purchase-count)
  (ok (var-get purchase-count))
 )
 
-(define-public (change-price (nft-con <nft-trait>) (name (string-ascii 28)) (id (string-ascii 28)) (price uint))
-  (let ((get-onsale-data (map-get? On-sale {Id: id}))
+;;private functions
 
-       )
-       ;;(map-set On-sale {Id: id} {name: name,id: id,price: price})
-  (ok "")
-  )
+(define-public (check-owner (nft-con <nft-trait>) (nft-id uint))
+ ;;#[allow(unchecked_data)]
+  (contract-call? nft-con get-owner nft-id)
 )
 
-;;Transfer-back-to-owner
-;;smart contract can be able to transfer nft back to the owners
 (define-private (transfer-back-to-owner (nft-con <nft-trait>) (id uint) (recipient principal))
  (begin
   (as-contract (contract-call? nft-con transfer id contract-owner recipient))
@@ -55,16 +53,7 @@
 )
 
 
-;;get-collections-by-id
-;;users can get a the list of listed collections
-(define-public (get-collections-by-id (nft-con <nft-trait>) (id (string-ascii 28)))
- (begin
-   (ok (map-get? On-sale {Id: id}))
- )
-)
-
-;;Transfer item
-;;users can be able to transfer nfts (items) to a given recipient
+;;public functions
 (define-public (transfer-item (nft-con <nft-trait>) (id uint ) (sender principal) (recipient principal))
   (begin
   ;;#[allow(unchecked_data)]
@@ -72,30 +61,33 @@
   )
 )
 
-;;Check nft-owner
-;;users can be able to check the owner of an nft (item)
-(define-public (check-owner (nft-con <nft-trait>) (nft-id uint))
- ;;#[allow(unchecked_data)]
-  (contract-call? nft-con get-owner nft-id)
-)
 
-;;List nft
-;;users can be able to list their nfts (item)
-(define-public (list-item (nft-con <nft-trait>) (id (string-ascii 28)) (name (string-ascii 28)) (desc (string-ascii 50)) (price uint) (item-id uint))
+;;  (define-public (change-price (nft-con <nft-trait>) (name (string-ascii 28)) (id (string-ascii 28)) (price uint))
+;;    (let ((get-onsale-data (map-get? On-sale {Id: id}))
+
+;;         )
+;;         (map-set On-sale {Id: id} {name: name,id: id,price: price})
+;;    (ok "")
+;;    )
+;;  )
+
+
+(define-public (list-item (nft-con <nft-trait>) (id uint) (name (string-ascii 28)) (desc (string-ascii 50)) (price uint))
  ;;#[allow(unchecked_data)]
- (let ((nft-owner (unwrap! (unwrap-panic (check-owner nft-con item-id)) err-not-owner)))
+ (let ((nft-owner (unwrap! (unwrap-panic (check-owner nft-con id)) err-not-owner)))
    (asserts! (> price (var-get minimum-floor-price)) err-low-price)
       (if (is-eq nft-owner tx-sender) 
-          (match  (unwrap-panic (transfer-item nft-con item-id nft-owner contract-owner))
+          (match  (unwrap-panic (transfer-item nft-con id nft-owner contract-owner))
              success
              (begin 
-              (map-set On-sale {Id: id} 
-                 {name: name, artist: (contract-of nft-con),descrption: desc,price: price,commision: (var-get commision)})
-               (print {
-                  event: "list-item",
-                  data: (map-get? On-sale {Id: id})}
+             (map-set On-sale {nft-name: (contract-of nft-con),id: id} {artist: nft-owner,description: desc,price: price,commision: (var-get commision)})
+               (ok 
+                 {
+                  type: "list-item",
+                  data: (map-get? On-sale {nft-name: (contract-of nft-con),id: id}),
+                  event: "successful"
+                 }
                )
-               (ok "list successful")
              )
            err err-transfer-failed
           )
@@ -104,46 +96,47 @@
    
   )
 )
-;;Unlist-item
-;;users can be able to unlist their nfts(items)
-(define-public (unlist-item (nft <nft-trait>) (id (string-ascii 28)) (item-id uint))
- (let ((nft-owner (unwrap-panic (map-get? On-sale {Id: id}))))
-   (asserts! (is-eq (get artist nft-owner) tx-sender) err-not-owner)
+
+(define-public (unlist-item (nft <nft-trait>) (id uint))
+ (let ((nft-owner (unwrap-panic (map-get? On-sale {nft-name: (contract-of nft),id: id}))))
+   (if  (is-eq (get artist nft-owner) tx-sender) 
+   
    ;;#[allow(unchecked_data)]
-   (match (transfer-back-to-owner nft item-id  tx-sender)
+   (match (transfer-back-to-owner nft id  tx-sender)
      success
       (begin 
-        (print 
-          {
-           event: "unlist-item",
-           data: (map-delete On-sale {Id: id})
-          }
-        )
-        (ok "unlist successful")
+        (map-delete On-sale {nft-name: (contract-of nft),id: id})
+        (ok "Unlist successful")
       )
-     err err-unlisting-failed
+     err err-transfer-failed
    )
+   err-not-owner
+   )
+   
  )
 )
 
-;;Purchase-nft
 ;;when i mint code should keep track of amount of purchases 
-(define-public (purchase-nft (nft-con <nft-trait>) (id (string-ascii 28)) (item-id uint))
- (let ((get-list (unwrap-panic (map-get? On-sale {Id: id})))
+(define-public (purchase-nft (nft-con <nft-trait>) (id uint))
+ (let ((get-list (unwrap-panic (map-get? On-sale {nft-name: (contract-of nft-con),id: id})))
       (price (get price get-list))
       (to-contract (get commision get-list))
       (to-owner (- price to-contract)))
       ;;#[allow(unchecked_data)]
      (match (stx-transfer? to-owner tx-sender (get artist get-list))
        start (match (stx-transfer? to-contract tx-sender contract-owner) 
-         contract-successful 
-           (match (transfer-back-to-owner nft-con item-id tx-sender)
-             success
-               (begin 
-                  (map-delete On-sale {Id: id})
-                  (var-set purchase-count (+ (var-get purchase-count) u1))
-                 (ok "Purchase successful")
-               )
+        contract-successful 
+          (match (transfer-back-to-owner nft-con id tx-sender)
+            success (begin 
+               (map-delete On-sale {nft-name: (contract-of nft-con),id: id})
+               (var-set purchase-count (+ (var-get purchase-count) u1))
+              (ok 
+              {
+                type: "purchase-nft",
+                event: "successful"
+              }
+              )
+           )
            err3 err-not-owner
          )
          err2 err-transfer-failed
@@ -153,20 +146,24 @@
   )
 )
 
-;;Admin unlist
-;;the assigned admin can forcefully unlist the collect due to some complecations
-(define-public (admin-unlist (nft-con <nft-trait>) (id (string-ascii 28)) (item-id uint))
- (let ((get-list (unwrap-panic (map-get? On-sale {Id: id}))))
-   (asserts! (is-eq id (get name get-list)) err-unlisting-failed)
+;;check if its admin
+;;can transfer nft back to owner
+(define-public (admin-unlist (nft-con <nft-trait>) (id uint))
+ (let ((get-list (unwrap-panic (map-get? On-sale {nft-name: (contract-of nft-con),id: id}))))
   (if (is-eq tx-sender admin)
 ;;#[allow(unchecked_data)]
-   (match (transfer-back-to-owner nft-con item-id (get artist get-list))
+   (match (transfer-back-to-owner nft-con id (get artist get-list))
      succeeded
       (begin  
-       (map-delete On-sale {Id: id})
-        (ok "Admin-unlist successful")
+       (map-delete On-sale {nft-name: (contract-of nft-con),id: id})
+         (ok 
+              {
+                type: "Admin-unlist successful",
+                event: "successful"
+              }
+              )
       )
-    failed err-unlisting-failed
+    err err-failed
    ) 
    err-not-allowed
   )
