@@ -28,5 +28,5 @@ Stacksnation is an Nft market that is bringing new territories to stacks as well
 
 • NFT Hackathons:
 
- In addition to our goal of onboarding a significant number of Nigerian creators, we also plan to hold NFT hackathons to support and empower existing and potential NFT artists and creators. These hackathons will provide a platform for creators to learn about the latest trends, technologies, and best practices in the NFT space, and to connect with other creators and industry experts.
+we also plan to hold NFT hackathons to support and empower existing and potential NFT artists and creators. These hackathons will provide a platform for creators to learn about the latest trends, technologies, and best practices in the NFT space, and to connect with other creators and industry experts.
 
