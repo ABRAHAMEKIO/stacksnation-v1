@@ -7,7 +7,7 @@
 Stacksnation is an NFT marketplace that is designed to support creators in Africa and bring more innovation to Bitcoin NFTs in the Stacks ecosystem. The platform is built on the Stacks blockchain, which is a decentralized platform that allows for the creation and trading of non-fungible tokens (NFTs).
 
 The v1 (beta) has been deployed to the stacks testnet and is accessible via: 
-- [stacks-explorer](https://explorer.stacks.co/txid/0x509a6a0d3d5e819d48a371dba998eecb7f90fe9781c3ce5cbdd97cf2bb9445f3?chain=testnet) Stacksnation-v1 contract on - [testnet](https://explorer.stacks.co/?chain=testnet).
+- [stacks-explorer](https://explorer.stacks.co/txid/0x509a6a0d3d5e819d48a371dba998eecb7f90fe9781c3ce5cbdd97cf2bb9445f3?chain=testnet) Stacksnation-v1 contract on [testnet](https://explorer.stacks.co/?chain=testnet).
 
 ## Why Stacksnation?:
 Stacksnation is an Nft market that is bringing new territories to stacks as well as innovating on bitcoin nfts in the stacks ecosystem 
