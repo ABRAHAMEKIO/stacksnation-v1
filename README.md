@@ -17,7 +17,7 @@ Stacksnation is an Nft market that is bringing new territories to stacks as well
 
  • Support for African Creators:
 
- Stacksnation is focused on providing a platform for creators in Africa to showcase and sell their work. This includes artists, musicians, and other creators who are looking to monetize their talents (though not only african creators can showcase but other creator but that our goal).
+ Stacksnation is focused on providing a platform for creators in Africa to showcase and sell their work. This includes artists, musicians, and other creators who are looking to monetize their talents (though not only african creators can showcase but other creator but thats our aim).
 
 • Bitcoin NFTs: 
 
