@@ -1,6 +1,5 @@
-## Stacksnation-v1
+## Stacksnation NFT-MARKETPLACE V1
 
-## STACKNATION NFT-MARKETPLACE
 ![](https://github.com/ABRAHAMEKIO/stacksnation-v1/blob/master/Untitled_Artwork_3.png)
 
 ## Introduction
