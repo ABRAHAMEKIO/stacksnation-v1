@@ -10,6 +10,7 @@
  (define-constant err-unlisting-failed (err u500))
  (define-constant err-not-allowed (err u600))
  (define-constant err-frozen (err u700))
+ 
 
 (define-data-var commision uint u250)
 
@@ -21,7 +22,7 @@
 (define-data-var purchase-count uint u0)
 
 
-(define-map nft-for-sale {nft-name: (string-ascii 100), id: uint} {seller: principal, price: uint})
+(define-map nft-for-sale {nft-name: principal, id: uint} {seller: principal, price: uint})
 
 
 (define-map frozen {id: principal} {event: bool, id: principal})
@@ -31,7 +32,6 @@
    name: principal,
    artist: principal,
    description: (string-ascii 50),
-   price: uint,
    commision: uint
  }
 )
@@ -45,10 +45,13 @@
 ;; (define-map collection-for-sale )
 
 (define-public (get-listed-collections (nft-contract <nft-trait>) (id uint))
- (begin
-   (ok (map-get? Collections {nft-name: (contract-of nft-contract),id: id}))
- )
+ (ok (map-get? Collections {nft-name: (contract-of nft-contract),id: id}))
 )
+
+(define-public (get-nft-for-sale (nft-contract <nft-trait>) (id uint))
+ (ok (map-get? nft-for-sale {nft-name: (contract-of nft-contract),id: id}))
+)
+
 (define-read-only (get-purchase-count)
  (ok (var-get purchase-count))
 )
@@ -66,8 +69,12 @@
   (contract-call? nft-contract get-owner nft-id)
 )
 
-(define-private (set-commission (com uint))
- (var-set commision com)
+(define-public (set-commission (com uint))
+;;#[allow(unchecked_data)]
+ (if (is-eq tx-sender contract-owner)
+    (ok (var-set commision com))
+  err-not-allowed
+ )
 )
 ;; if the seller or creator fails to abide to the terms and policies of the marketplace his nft will be frozen by the admin
 (define-public (set-frozen (nft-con <nft-trait>))
@@ -104,28 +111,32 @@
 )
 
 ;; have to add frozen code here
-;;  (define-public (change-price (nft-contract <nft-trait>) (id uint))
-;;    (let ((get-onsale-data (unwrap-panic (map-get? Collections {nft-name: (contract-of nft-contract),id: id})))
-
-;;         )
-
-;;         (if (is-eq (get artist get-onsale-data) tx-sender)
-         
-;;          (match (map-set Collections {nft-name: (contract-of nft-contract),id: id})
-;;           success
-;;            (begin (ok "")
-           
-;;            )
-;;             err   err-failed
-;;          )
-;;           err-not-owner
-;;         )
-;;    )
-;;  )
+ (define-public (change-price (nft-contract <nft-trait>) (id uint) (price uint))
+;;#[allow(unchecked_data)]
+   (let ((get-sale (map-get? nft-for-sale {nft-name: (contract-of nft-contract),id: id}))
+        (get-collection (map-get? Collections {nft-name: (contract-of nft-contract),id: id}))
+        )
+        (asserts! (> price (var-get minimum-price)) err-low-price)
+        (if (is-eq (get seller get-sale) (some tx-sender))
+         (if (is-eq (some (contract-of nft-contract)) (get name get-collection))
+           (begin 
+             (map-set nft-for-sale {nft-name: (contract-of nft-contract),id: id} {seller: tx-sender, price: price})
+            (ok {
+                  type: "list-item",
+                  data: (map-get? nft-for-sale {nft-name: (contract-of nft-contract),id: id}),
+                  event: "successful"
+                   }
+           )
+           )
+          err-failed
+         )
+          err-not-owner
+        )
+   )
+ )
 
 ;; have to add listing-id
-;; have to add frozen code here
-;;not listing id most be automated
+;; listing id most be automated
 (define-public (list-item (nft-contract <nft-trait>) (id uint) (desc (string-ascii 50)) (price uint))
  ;;#[allow(unchecked_data)]
  (let ((nft-owner (unwrap! (unwrap-panic (check-owner nft-contract id)) err-not-owner)))
@@ -134,7 +145,10 @@
           (match  (unwrap-panic (transfer-item nft-contract id nft-owner Admin))
              success
              (begin 
-             (map-set Collections {nft-name: (contract-of nft-contract),id: id} {name: (contract-of nft-contract), artist: nft-owner,description: desc,price: price,commision: (var-get commision)})
+             (map-set Collections {nft-name: (contract-of nft-contract),id: id} {name: (contract-of nft-contract), artist: nft-owner,description: desc,commision: (var-get commision)})
+             (map-set nft-for-sale {nft-name: (contract-of nft-contract),id: id} 
+                {seller: nft-owner, price: price}
+             )
                (ok 
                  {
                   type: "list-item",
@@ -178,13 +192,15 @@
 ;; the commision is dynamic, the price determines the commision
 ;;when i mint code should keep track of amount of purchases 
 ;; if nft is frozen the buyer cannot purchase the nft
-(define-public (purchase-nft (nft-con <nft-trait>) (id uint))
+(define-public (purchase-item (nft-con <nft-trait>) (id uint))
 ;;#[allow(unchecked_data)]
  (let ((get-list (unwrap-panic (map-get? Collections {nft-name: (contract-of nft-con),id: id})))
-      (price (get price get-list))
-      (to-contract (/ (* (get commision get-list) price) u10000))
-      (to-owner (- price to-contract))
+      (get-sale (unwrap-panic (map-get? nft-for-sale {nft-name: (contract-of nft-con),id: id})))
       (check-frozen (unwrap-panic (map-get? frozen {id: (contract-of nft-con)})))
+      (price (get price get-sale))
+      (to-contract (/ (* (var-get commision) price) u10000))
+      (to-owner (- price to-contract))
+      
       )
     (asserts! (not (is-eq (contract-of nft-con) (get id check-frozen))) err-frozen)
      (if (not (is-eq (get artist get-list) tx-sender))
@@ -217,6 +233,7 @@
 ;;can transfer nft back to owner 
 (define-public (admin-unlist (nft-contract <nft-trait>) (id uint))
  (let ((get-list (unwrap-panic (map-get? Collections {nft-name: (contract-of nft-contract),id: id}))))
+  (asserts! (is-eq (contract-of nft-contract) (get name get-list)) err-unlisting-failed)
   (if (is-eq tx-sender contract-owner)
 ;;#[allow(unchecked_data)]
    (match (transfer-back-to-owner nft-contract id (get artist get-list))
