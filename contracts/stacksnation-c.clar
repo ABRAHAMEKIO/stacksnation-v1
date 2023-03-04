@@ -19,7 +19,7 @@
 (define-data-var minimum-price uint u20000)
 
 (define-data-var listing-id uint u0)
-(define-data-var purchase-count uint u0)
+(define-data-var purchase-nonce uint u0)
 
 
 (define-map nft-for-sale {nft-name: principal, id: uint} {seller: principal, price: uint})
@@ -52,8 +52,8 @@
  (ok (map-get? nft-for-sale {nft-name: (contract-of nft-contract),id: id}))
 )
 
-(define-read-only (get-purchase-count)
- (ok (var-get purchase-count))
+(define-read-only (get-purchase-nonce)
+ (ok (var-get purchase-nonce))
 )
 
 (define-read-only (get-frozen (id <nft-trait>))
@@ -210,7 +210,7 @@
           (match (transfer-back-to-owner nft-con id tx-sender)
             success (begin 
                (map-delete Collections {nft-name: (contract-of nft-con),id: id})
-               (var-set purchase-count (+ (var-get purchase-count) u1))
+               (var-set purchase-nonce (+ (var-get purchase-nonce) u1))
               (ok 
               {
                 type: "purchase-nft",
