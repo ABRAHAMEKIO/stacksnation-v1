@@ -16,6 +16,9 @@ path = "contracts/sip-trait.clar"
 [contracts.sip009]
 path = "contracts/sip009.clar"
 
+[contracts.clarity-shake]
+path = "contracts/sip009.clar"
+
 [contracts.stacksnation-c]
 path = "contracts/stacksnation-c.clar"
 
