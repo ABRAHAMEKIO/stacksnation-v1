@@ -1,10 +1,7 @@
-## Stacksnation NFT-MARKETPLACE V1
+## Stacksnation marketplace
 
 ![](https://github.com/ABRAHAMEKIO/stacksnation-v1/blob/master/Untitled_Artwork_3.png)
 
-## Table of contents
-
-1. [introduction](#Introduction)
 
 ## Introduction
 Stacksnation is an NFT marketplace that is designed to support creators in [Africa](https://en.wikipedia.org/wiki/Africa) and bring more innovation to Bitcoin NFTs in the Stacks ecosystem. The platform is built on the Stacks blockchain, which is a decentralized platform that allows for the creation and trading of non-fungible tokens (NFTs).
