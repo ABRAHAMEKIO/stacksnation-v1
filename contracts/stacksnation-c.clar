@@ -1,5 +1,7 @@
 ;; stacknsation nft marketplace-v1
-;; be able to list a single item and then a full collection
+
+;; Stacksnation is an NFT marketplace built to support creators in Africa
+;; and bring more innovation to Bitcoin-based NFTs in the Stacks ecosystem
 
  (use-trait nft-trait 'SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait.nft-trait)
 
@@ -48,6 +50,10 @@
 ;; helper function to keep track of purchases made
 (define-read-only (get-purchase-nonce)
  (ok (var-get purchase-nonce))
+)
+
+(define-public (get-listing-nonce) 
+   (ok (var-get listing-id))
 )
 
 ;; helper function to get the list of frozen collections
@@ -113,33 +119,26 @@
 ;; creators and sellers can be able to change price of an nft they have listed up for sale
  (define-public (change-price (nft-contract <nft-trait>) (id uint) (price uint))
 ;;#[allow(unchecked_data)]
-   (let ((get-sale (map-get? nft-for-sale {nft-name: (contract-of nft-contract),id: id}))
-         (get-collection (map-get? Collections {nft-name: (contract-of nft-contract),id: id}))
-         (get-frozen1 (map-get? frozen {id: (contract-of nft-contract)}))
-        )
+   (let ((get-sale (map-get? nft-for-sale {nft-name: (contract-of nft-contract),id: id})) )
         (asserts! (> price (var-get minimum-price)) ERR_LOW_PRICE)
         (asserts! (is-none (map-get? frozen {id: (contract-of nft-contract)})) ERR_FROZEN)
+        (asserts! (is-some (map-get? Collections {nft-name: (contract-of nft-contract),id: id})) ERR_FAILED)
         (if (is-eq (get seller get-sale) (some tx-sender))
-         (if (is-eq (some (contract-of nft-contract)) (get name get-collection))
            (begin 
              (map-set nft-for-sale {nft-name: (contract-of nft-contract),id: id} {seller: tx-sender, price: price})
-            (ok 
-            {
-              type: "Change-price",
-              data: (map-get? nft-for-sale {nft-name: (contract-of nft-contract),id: id}),
-              event: "successful"
-            }
+              (ok {
+                type: "Change-price",
+                data: (map-get? nft-for-sale {nft-name: (contract-of nft-contract),id: id}),
+                event: "successful"
+                }
+              )
            )
-           )
-          ERR_FAILED
-         )
           ERR_NOT_OWNER
         )
    )
  )
 
-;; have to add listing-id
-;; listing id most be automated
+
 (define-public (list-item (nft-contract <nft-trait>) (id uint) (desc (string-ascii 50)) (price uint))
  ;;#[allow(unchecked_data)]
  (let ((nft-owner (unwrap! (unwrap-panic (check-owner nft-contract id)) ERR_NOT_OWNER))
@@ -154,12 +153,12 @@
              (map-set nft-for-sale {nft-name: (contract-of nft-contract),id: id} 
                 {seller: nft-owner, price: price}
              )
+             (var-set listing-id (+ listing-nonce u1))
                (ok 
                  {
                   type: "list-item",
                   data: {name: (contract-of nft-contract), description: desc, commision: (var-get commision), price: price},
                   event: "successful",
-                  nonce: (var-set listing-id (+ listing-nonce u1))
                  }
                )
              )
@@ -171,16 +170,18 @@
   )
 )
 
-;; creator or seller can be able to unlist their nft
+;; creator or seller can be able to unlist their nft at will
 (define-public (unlist-item (nft <nft-trait>) (id uint))
  (let ((nft-owner (unwrap-panic (map-get? Collections {nft-name: (contract-of nft),id: id})))
  )
+   (asserts! (is-some (map-get? Collections {nft-name: (contract-of nft), id: id})) ERRR_UNLIST_FAILED)
    (if  (is-eq (get artist nft-owner) tx-sender) 
    ;;#[allow(unchecked_data)]
    (match (transfer-back-to-owner nft id  tx-sender)
      success
       (begin 
         (map-delete Collections {nft-name: (contract-of nft),id: id})
+        (map-delete nft-for-sale {nft-name: (contract-of nft), id: id})
         (ok 
         {
           type: "Unlist", 
@@ -209,7 +210,7 @@
       (to-contract (/ (* (var-get commision) price) u10000))
       (to-owner (- price to-contract))
       )
-    (asserts! (not (is-eq (contract-of nft-con) (get id check-frozen))) ERR_FROZEN)
+    (asserts! (is-none (map-get? frozen {id: (contract-of nft-con)})) ERR_FROZEN)
      (if (not (is-eq (get artist get-list) tx-sender))
       (match (stx-transfer? to-owner tx-sender (get artist get-list))
        start (match (stx-transfer? to-contract tx-sender Admin) 
@@ -217,6 +218,7 @@
           (match (transfer-back-to-owner nft-con id tx-sender)
             success (begin 
                (map-delete Collections {nft-name: (contract-of nft-con),id: id})
+               (map-delete nft-for-sale {nft-name: (contract-of nft-con),id: id})
                (var-set purchase-nonce (+ (var-get purchase-nonce) u1))
               (ok 
               {
@@ -239,19 +241,20 @@
 ;; admin can unlist the nft if the creator does not follow the rules and regulations
 (define-public (admin-unlist (nft-contract <nft-trait>) (id uint))
  (let ((get-list (unwrap-panic (map-get? Collections {nft-name: (contract-of nft-contract),id: id}))))
-  (asserts! (is-eq (contract-of nft-contract) (get name get-list)) ERRR_UNLIST_FAILED)
+  (asserts! (is-none (map-get? Collections {nft-name: (contract-of nft-contract), id: id})) ERRR_UNLIST_FAILED)
   (if (is-eq tx-sender contract-owner)
 ;;#[allow(unchecked_data)]
    (match (transfer-back-to-owner nft-contract id (get artist get-list))
      succeeded
       (begin  
        (map-delete Collections {nft-name: (contract-of nft-contract),id: id})
+       (map-delete nft-for-sale {nft-name: (contract-of nft-contract),id: id})
          (ok 
               {
                 type: "Admin-unlist",
                 event: "successful"
               }
-              )
+        )
       )
     err ERR_FAILED
    ) 
