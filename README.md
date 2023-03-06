@@ -38,12 +38,12 @@ we also plan to hold NFT hackathons to support and empower existing and potentia
 ## Main functions:
  this are the main functions for the contract the other functions are for back-end stuff
  
-• List-item
+`List-item`
 
-• Unlist-item
+`Unlist-item`
 
-• Admin-unlist
+`Admin-unlist`
 
-• Purchase-item
+`Purchase-item`
 
-• Transfer-item
+`Transfer-item`
