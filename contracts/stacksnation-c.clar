@@ -171,6 +171,7 @@
   )
 )
 
+;; creator or seller can be able to unlist their nft
 (define-public (unlist-item (nft <nft-trait>) (id uint))
  (let ((nft-owner (unwrap-panic (map-get? Collections {nft-name: (contract-of nft),id: id})))
  )
