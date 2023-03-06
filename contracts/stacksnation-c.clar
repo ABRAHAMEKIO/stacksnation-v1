@@ -198,9 +198,9 @@
  )
 )
 
-;; the commision is dynamic, the price determines the commision
-;;when i mint code should keep track of amount of purchases 
-;; if nft is frozen the buyer cannot purchase the nft
+;; users (buyers) can be able to purchase an nft but if nft is frozen the buyer cannot purchase the nft
+;; to transfers stx transfer will be made one for the seller and one for the contract
+;; the commision is dynamic price determines commission amount
 (define-public (purchase-item (nft-con <nft-trait>) (id uint))
 ;;#[allow(unchecked_data)]
  (let ((get-list (unwrap-panic (map-get? Collections {nft-name: (contract-of nft-con),id: id})))
