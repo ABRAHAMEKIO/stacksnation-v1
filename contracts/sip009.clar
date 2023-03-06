@@ -42,3 +42,7 @@
 		(ok token-id)
 	)
 )
+
+(define-public (get-name)
+ (ok "crypto-mash")
+)
