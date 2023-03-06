@@ -2,6 +2,10 @@
 
 ![](https://github.com/ABRAHAMEKIO/stacksnation-v1/blob/master/Untitled_Artwork_3.png)
 
+## Table of contents
+
+1. [introduction](#Introduction)
+
 ## Introduction
 Stacksnation is an NFT marketplace that is designed to support creators in [Africa](https://en.wikipedia.org/wiki/Africa) and bring more innovation to Bitcoin NFTs in the Stacks ecosystem. The platform is built on the Stacks blockchain, which is a decentralized platform that allows for the creation and trading of non-fungible tokens (NFTs).
 
@@ -38,12 +42,12 @@ we also plan to hold NFT hackathons to support and empower existing and potentia
 ## Main functions:
  this are the main functions for the contract the other functions are for back-end stuff
  
-• List-item
+`List-item`
 
-• Unlist-item
+`Unlist-item`
 
-• Admin-unlist
+`Admin-unlist`
 
-• Purchase-item
+`Purchase-item`
 
-• Transfer-item
+`Transfer-item`
