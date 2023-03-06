@@ -205,7 +205,6 @@
 ;;#[allow(unchecked_data)]
  (let ((get-list (unwrap-panic (map-get? Collections {nft-name: (contract-of nft-con),id: id})))
       (get-sale (unwrap-panic (map-get? nft-for-sale {nft-name: (contract-of nft-con),id: id})))
-      (check-frozen (unwrap-panic (map-get? frozen {id: (contract-of nft-con)})))
       (price (get price get-sale))
       (to-contract (/ (* (var-get commision) price) u10000))
       (to-owner (- price to-contract))
