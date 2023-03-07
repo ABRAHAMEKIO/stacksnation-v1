@@ -74,18 +74,17 @@ with the set-frozen function admin can be able to freeze an nft if the cretor of
 with the get-nft-for-sale function users can be able to checker the price of the nft
 
 - `check-owner`:
-with the checker-owner function user can be able to check the owner of the nft (the contract use this function to check if the seller os the true ownr of the nft)
+with the checker-owner function user can be able to check the owner of the nft (the contract use this function to check if the seller is the true owner of the nft)
 
-- `set-commission`:
-with the set 
+- `set-commission`: with the set-commision function admin or contract owner can modify the  amount commission 
 
 ## Read-only functions
 
-- `get-purchase-nonce`:
+- `get-purchase-nonce`
 
-- `get-listing-nonce`:
+- `get-listing-nonce`
 
-- `get-frozen`:
+- `get-frozen`
 
 ## Tests
 note: this contract is'nt thoroughfully tested and a unit test was not written but you can test or call the functions manually
