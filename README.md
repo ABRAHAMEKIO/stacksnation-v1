@@ -27,7 +27,7 @@ Certainly! As an NFT marketplace that is focused on the African market, Stacksna
 
 ### transfer-item
 
-### Smart contract:
+## Smart contract:
 
 ## Public functions of the marketplace
 the marketplace provides this functions to:
