@@ -32,6 +32,7 @@ we also plan to hold NFT hackathons to support and empower existing and potentia
 
 • DAO: 
 
+## Smart contract:
 
 ### Public functions of the marketplace
 the marketplace provides this functions to:
