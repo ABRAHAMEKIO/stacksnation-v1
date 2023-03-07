@@ -14,23 +14,21 @@ Certainly! As an NFT marketplace that is focused on the African market, Stacksna
 
 ## Features:
 
- • Support for African Creators:
+• **Support for African Creators**:
 
  Stacksnation is focused on providing a platform for creators in Africa to showcase and sell their work. This includes artists, musicians, and other creators who are looking to monetize their talents (though not only african creators can showcase but other creator but thats our aim).
 
-• Bitcoin NFTs: 
+• **Bitcoin NFTs**: 
 
  Stacksnation is built to support the creation and trading of Bitcoin NFTs. This means that users can mint, buy, and sell NFTs that are backed by Bitcoin, providing a new way to use the cryptocurrency through stacks.
 
-• NFT project acceleration:
+• **NFT project acceleration**:
 
  Stacksnation is designed to bring more innovation to the NFT space by accelerating NFT projects in the stacks ecosystem to provide new ways for NFTs to be used and users to engage with NFTs.
 
-• NFT Hackathons:
+• **NFT Hackathons**:
 
 we also plan to hold NFT hackathons to support and empower existing and potential NFT artists and creators. These hackathons will provide a platform for creators to learn about the latest trends, technologies, and best practices in the NFT space, and to connect with other creators and industry experts.
-
-• DAO: 
 
 ## Smart contract:
 
