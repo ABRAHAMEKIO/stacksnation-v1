@@ -37,6 +37,10 @@
  }
 )
 
+(define-read-only (get-commission)
+ (var-get commision)
+)
+
 ;; helper function to check if an nft is listed or is up for sale
 (define-public (get-listed-collections (nft-contract <nft-trait>) (id uint))
  (ok (map-get? Collections {nft-name: (contract-of nft-contract),id: id}))

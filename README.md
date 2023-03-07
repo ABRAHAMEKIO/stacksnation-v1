@@ -61,8 +61,7 @@ the commision is dynamic price determines commission amount
 ## Assisting / Other functions
 
 - `set-frozen`: 
-
-with the set-frozen function admin can be able to freeze an nft if the cretor of the nft violates the terms and policies of the marketplace
+ with the set-frozen function admin can be able to freeze an nft if the cretor of the nft violates the terms and policies of the marketplace
 
 - `undo-frozen`:
  with the undo-frozen function admin can be able to unfreeze an nft if the creator makes an apeal
@@ -71,12 +70,13 @@ with the set-frozen function admin can be able to freeze an nft if the cretor of
  with the get-listed-collections function users can be able to search for an nft
 
 - `get-nft-for-sale`:
-with the get-nft-for-sale function users can be able to checker the price of the nft
+ with the get-nft-for-sale function users can be able to checker the price of the nft
 
 - `check-owner`:
 with the checker-owner function user can be able to check the owner of the nft (the contract use this function to check if the seller is the true owner of the nft)
 
-- `set-commission`: with the set-commision function admin or contract owner can modify the  amount commission 
+- `set-commission`:
+ with the set-commision function admin or contract owner can modify the  amount commission 
 
 ## Read-only functions
 
@@ -102,15 +102,29 @@ note: this contract is'nt thoroughfully tested and a unit test was not written b
 
 `(contract-call? 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.stacksnation-c admin-unlist ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sip009 u1)`
 
-- **Other functions**:
-
 `(contract-call? .stacksnation-c change-price .sip009 u1 u300000)`
+
+- **Other functions**:
 
 `(contract-call? .stacksnation-c set-frozen .sip009)`
 
 `(contract-call? .stacksnation-c undo-frozen .sip009)`
 
 `(contract-call? .stacksantion-c set-commission u350)`
+
+`(contract-call? .stacksnation-c get-listed-collections .sip009 u1)`
+
+`(contract-call? .stacksnation-c get-nft-for-sale .sip009 u1)`
+
+## Read-only functions
+
+`(contract-call? .stacksnation-c get-commission)`
+
+`(contract-call? .stacksnation-c get-purchase-nonce)`
+
+`(contract-call? .stacksnation-c get-listing-nonce)`
+
+`(contract-call? .stacksnation-c get-frozen .sip009)`
 
 
 ## Deployment
