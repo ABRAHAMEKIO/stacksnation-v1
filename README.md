@@ -33,9 +33,11 @@ with the **purchase-item** feature, buyers have the ablilty to purchase an nft a
 
 #### Admin-unlist
 
+with the **admin-unlist** feature the admin is able to unlist an nft if nessesary or if the creator or seller violates the terms and policies
 
 #### transfer-item
 
+with the **transfer-item** feature users can be able to transfer an nft to a chosen address
 
 ## Smart contract:
 
