@@ -6,7 +6,7 @@
 ## Introduction
 Stacksnation is an NFT marketplace that is designed to support creators in [Africa](https://en.wikipedia.org/wiki/Africa) and bring more innovation to Bitcoin NFTs in the Stacks ecosystem. The platform is built on the Stacks blockchain, which is a decentralized platform that allows for the creation and trading of non-fungible tokens (NFTs).
 
-This is a submission to the Building on Bitcoin Hackathon Series.
+This is a submission to the [Building on Bitcoin Hackathon](https://building-on-btc-hack.devpost.com/?ref_content=default&ref_feature=challenge&ref_medium=portfolio) Series.
 
 ## Why Stacksnation?:
 
