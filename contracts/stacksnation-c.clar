@@ -73,7 +73,7 @@
 ;; the owner of this contract is able to change the commision
 (define-public (set-commission (com uint))
 ;;#[allow(unchecked_data)]
- (if (is-eq tx-sender contract-owner)
+ (if (or (is-eq tx-sender contract-owner) (is-eq tx-sender Admin))
     (ok (var-set commision com))
   ERR_NOT_ALLOWED
  )

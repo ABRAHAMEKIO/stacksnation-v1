@@ -60,15 +60,21 @@ the commision is dynamic price determines commission amount
 
 ## Assisting / Other functions
 
-- `set-frozen`:
+- `set-frozen`: 
 
-- `undo-frozen`:
+with the set-frozen function admin can be able to freeze an nft if the cretor of the nft violates the terms and policies of the marketplace
 
-- `get-listed-collections`:
+- `undo-frozen`: 
 
-- `get-nft-for-sale`:
+with the undo-frozen function admin can be able to unfreeze an nft if the creator makes an apeal
 
-- `check-owner`:
+- `get-listed-collections`: with the get-listed-collections function users can be able to search for an nft
+
+- `get-nft-for-sale`: with the get-nft-for-sale function users can be able to checker the price of the nft
+
+- `check-owner`: with the checker-owner function user can be able to check the owner of the nft (the contract use this function to check if the seller os the true ownr of the nft)
+
+- `set-commission`: with the set 
 
 ## Read-only functions
 
