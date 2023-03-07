@@ -50,6 +50,8 @@ the commision is dynamic price determines commission amount
 - **`Transfer-item`**: users (creators/sellers/buyers) can be able to transfer nfts
 
 
+## Assisting / Other functions
+
 ## Tests
 
 
