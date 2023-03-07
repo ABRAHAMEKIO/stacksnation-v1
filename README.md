@@ -4,7 +4,7 @@
 
 
 ## Introduction
-Stacksnation is an NFT marketplace that is designed to support creators in [Africa](https://en.wikipedia.org/wiki/Africa) and bring more innovation to Bitcoin NFTs in the Stacks ecosystem. The platform is built on the Stacks blockchain, which is a decentralized platform that allows for the creation and trading of non-fungible tokens (NFTs).
+**Stacksnation** is an NFT marketplace that is designed to support creators in [Africa](https://en.wikipedia.org/wiki/Africa) and bring more innovation to Bitcoin NFTs in the Stacks ecosystem. The platform is built on the Stacks blockchain, which is a decentralized platform that allows for the creation and trading of non-fungible tokens (NFTs).
 
 This is a submission to the [Building on Bitcoin Hackathon](https://building-on-btc-hack.devpost.com/?ref_content=default&ref_feature=challenge&ref_medium=portfolio) Series.
 
@@ -37,14 +37,20 @@ we also plan to hold NFT hackathons to support and empower existing and potentia
 ### Public functions of the marketplace
 the marketplace provides this functions to:
  
-- `List-item`: users (creators/sellers) can be able to put the nft up for sale
+- **`List-item`**: users (creators/sellers) can be able to put the nft up for sale
 
-- `Unlist-item`: creator or seller can be able to unlist their nft at will
+- **`Unlist-item`**: creator or seller can be able to unlist their nft at will
 
-- `Admin-unlist`: admin can unlist the nft if the creator does not follow the rules and regulations
+- **`Admin-unlist`**: admin can unlist the nft if the creator does not follow the rules and regulations
 
-- `Purchase-item`: users (buyers) can be able to purchase an nft but if nft is frozen the buyer cannot purchase the nft
+- **`Purchase-item`**: users (buyers) can be able to purchase an nft but if nft is frozen the buyer cannot purchase the nft
 to transfers stx transfer will be made one for the seller and one for the contract
 the commision is dynamic price determines commission amount
 
-- `Transfer-item`: users (creators/sellers/buyers) can be able to transfer nfts
+- **`Transfer-item`**: users (creators/sellers/buyers) can be able to transfer nfts
+
+
+## Tests
+
+
+## Future work
