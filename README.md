@@ -36,12 +36,14 @@ we also plan to hold NFT hackathons to support and empower existing and potentia
 ### Public functions of the marketplace
 the marketplace provides this functions to:
  
-`List-item`
+- `List-item`: users (creators/sellers) can be able to put the nft up for sale
 
-`Unlist-item`
+- `Unlist-item`: creator or seller can be able to unlist their nft at will
 
-`Admin-unlist`
+- `Admin-unlist`: admin can unlist the nft if the creator does not follow the rules and regulations
 
-`Purchase-item`
+- `Purchase-item`: users (buyers) can be able to purchase an nft but if nft is frozen the buyer cannot purchase the nft
+to transfers stx transfer will be made one for the seller and one for the contract
+the commision is dynamic price determines commission amount
 
-`Transfer-item`
+- `Transfer-item`: users (creators/sellers/buyers) can be able to transfer nfts
