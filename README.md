@@ -110,6 +110,8 @@ note: this contract is'nt thoroughfully tested and a unit test was not written b
 
 `(contract-call? .stacksnation-c undo-frozen .sip009)`
 
+`(contract-call? .stacksantion-c set-commission u350)`
+
 
 ## Deployment
 
