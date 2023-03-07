@@ -15,21 +15,21 @@ Certainly! As an NFT marketplace that is focused on the African market, Stacksna
 
 ## Features:
 
-# List-item
+### List-item
 
-# Change-price
+### Change-price
 
-# Unlist-item
+### Unlist-item
 
-# Purchase-item
+### Purchase-item
 
-# Admin-unlist
+### Admin-unlist
 
-# transfer-item
+### transfer-item
 
-## Smart contract:
+### Smart contract:
 
-### Public functions of the marketplace
+## Public functions of the marketplace
 the marketplace provides this functions to:
  
 - `List-item`: users (creators/sellers) can be able to put the nft up for sale
