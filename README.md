@@ -44,20 +44,39 @@ with the **transfer-item** feature users can be able to transfer an nft to a cho
 ## Public functions of the marketplace
 the marketplace provides this functions to:
  
-- `List-item`: users (creators/sellers) can be able to put the nft up for sale
+- `List-item`: with the list-item function, Nft creators or sellers have the ability to put an Nft for sale in the marketplace, however if the nft that have been put up for sale fails to follow the terms and policies of the marketplace it will be frozen.
 
-- `Unlist-item`: creator or seller can be able to unlist their nft at will
+- `Unlist-item`: with the unlist-item function, creators and sellers have the ability to remove their Nft from sale at any time, even if it has been previously been frozen by the markeplace.
 
-- `Admin-unlist`: admin can unlist the nft if the creator does not follow the rules and regulations
+- `Admin-unlist`: with the admin-unlist function the admin is able to unlist an nft if nessesary or if the creator or seller violates the terms and policies
 
-- `Purchase-item`: users (buyers) can be able to purchase an nft but if nft is frozen the buyer cannot purchase the nft
-to transfers stx transfer will be made one for the seller and one for the contract
+- `Purchase-item`: with the purchase-item function, buyers have the ablilty to purchase an nft at any time, but if the nft has been frozen by the marketplace it can't be purchased,
 the commision is dynamic price determines commission amount
 
-- `Transfer-item`: users (creators/sellers/buyers) can be able to transfer nfts
+- `Transfer-item`: with the transfer-item function, users can be able to transfer an nft to a chosen address
+
+- `Change-price`: with the change-price function, either the creators or sellers can adjust the price of an nft that has been listed for sale, however the price can not be lowered below 1 stx.
 
 
 ## Assisting / Other functions
+
+- `set-frozen`:
+
+- `undo-frozen`:
+
+- `get-listed-collections`:
+
+- `get-nft-for-sale`:
+
+- `check-owner`:
+
+## Read-only functions
+
+- `get-purchase-nonce`:
+
+- `get-listing-nonce`:
+
+- `get-frozen`:
 
 ## Tests
 note: this contract is'nt thoroughfully tested and a unit test was not written but you can test or call the functions manually
