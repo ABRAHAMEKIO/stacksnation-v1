@@ -33,8 +33,8 @@ we also plan to hold NFT hackathons to support and empower existing and potentia
 • DAO: 
 
 
-## Main functions:
- this are the main functions for the contract the other functions are for back-end stuff
+### Public functions of the marketplace
+the marketplace provides this functions to:
  
 `List-item`
 
