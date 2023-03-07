@@ -15,7 +15,17 @@ Certainly! As an NFT marketplace that is focused on the African market, Stacksna
 
 ## Features:
 
+# List-item
 
+# Change-price
+
+# Unlist-item
+
+# Purchase-item
+
+# Admin-unlist
+
+# transfer-item
 
 ## Smart contract:
 
