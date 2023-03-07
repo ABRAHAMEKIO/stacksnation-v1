@@ -53,6 +53,9 @@ the commision is dynamic price determines commission amount
 ## Assisting / Other functions
 
 ## Tests
+note: this contract is'nt thoroughfully tested and a unit test was not written but you can test or call the functions manually
+
+`(contract-call? .sip009 mint tx-sender) (contract-call? 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.stacksnation-c list-item 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sip009 u1 "crypt" u30000) (contract-call? .stacksnation-c unlist-item 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sip009 u1) (contract-call? 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.stacksnation-c purchase-item 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sip009 u1)`
 
 
 ## Future work
