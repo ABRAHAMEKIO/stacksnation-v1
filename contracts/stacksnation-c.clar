@@ -138,7 +138,7 @@
    )
  )
 
-;; users (creators/sellers) can be able to put the nft up for sale
+;; with the list-item feature Nft creators or sellers have the ability to put an Nft for sale in the marketplace
 (define-public (list-item (nft-contract <nft-trait>) (id uint) (desc (string-ascii 50)) (price uint))
  ;;#[allow(unchecked_data)]
  (let ((nft-owner (unwrap! (unwrap-panic (check-owner nft-contract id)) ERR_NOT_OWNER))

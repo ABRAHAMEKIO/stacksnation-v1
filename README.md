@@ -15,17 +15,27 @@ Certainly! As an NFT marketplace that is focused on the African market, Stacksna
 
 ## Features:
 
-### List-item
+#### List-item
 
-### Change-price
+with the **list-item** feature Nft creators or sellers have the ability to put an Nft for sale in the marketplace, however if the nft that have been put up for sale fails to follow the terms and policies of the marketplace it will be frozen.
 
-### Unlist-item
+#### Change-price
 
-### Purchase-item
+with the **change-price** feature, either the creators or sellers can adjust the price of an nft that has been listed for sale, however the price can not be lowered below 1 stx.
 
-### Admin-unlist
+#### Unlist-item
 
-### transfer-item
+with the **unlist-item** feature, creators and sellers have the ability to remove their Nft from sale at any time, even if it has been previously been frozen by the markeplace.
+
+#### Purchase-item
+
+with the **purchase-item** feature, buyers have the ablilty to purchase an nft at any time, but if the nft has been frozen by the marketplace it can't be purchased
+
+#### Admin-unlist
+
+
+#### transfer-item
+
 
 ## Smart contract:
 
