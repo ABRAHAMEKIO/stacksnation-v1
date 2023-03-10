@@ -112,7 +112,7 @@
  )
 )
 
-;; users (creators/sellers/buyers) can be able to transfer nfts
+;; with the transfer-item function, users can be able to transfer an nft to a chosen address
 (define-public (transfer-item (nft-contract <nft-trait>) (id uint ) (sender principal) (recipient principal))
   (begin
   ;;#[allow(unchecked_data)]
@@ -120,7 +120,8 @@
   )
 )
 
-;; creators and sellers can be able to change price of an nft they have listed up for sale
+;; with the change-price function, either the creators or sellers can adjust the price
+;; of an nft that has been listed for sale, however the price can not be lowered below 1 stx.
  (define-public (change-price (nft-contract <nft-trait>) (id uint) (price uint))
 ;;#[allow(unchecked_data)]
    (let ((get-sale (map-get? nft-for-sale {nft-name: (contract-of nft-contract),id: id})) )
@@ -166,7 +167,8 @@
    )
 )
 
-;; creator or seller can be able to unlist their nft at will
+;; with the unlist-item function, creators and sellers have the ability to remove their Nft from sale at any time,
+;;  even if it has been previously been frozen by the markeplace.
 (define-public (unlist-item (nft <nft-trait>) (id uint))
    ;;#[allow(unchecked_data)]
  (let ((nft-owner (unwrap-panic (map-get? Collections {nft-name: (contract-of nft),id: id}))))
@@ -188,8 +190,8 @@
 )
 
 
-;; users (buyers) can be able to purchase an nft but if nft is frozen the buyer cannot purchase the nft
-;; to transfers stx transfer will be made one for the seller and one for the contract
+;; with the purchase-item function, buyers have the ablilty to purchase an nft at any time,
+;; but if the nft has been frozen by the marketplace it can't be purchased,
 ;; the commision is dynamic price determines commission amount
 (define-public (purchase-item (nft-con <nft-trait>) (id uint))
 ;;#[allow(unchecked_data)]
@@ -216,22 +218,23 @@
               )
          )
 )
-;; admin can unlist the nft if the creator does not follow the rules and regulations
+;; with the admin-unlist function the admin is able to unlist 
+;; an nft if nessesary or if the creator or seller violates the terms and policies
 (define-public (admin-unlist (nft-contract <nft-trait>) (id uint))
 ;;#[allow(unchecked_data)]
  (let ((get-list (unwrap-panic (map-get? Collections {nft-name: (contract-of nft-contract),id: id}))))
   (asserts! (is-none (map-get? Collections {nft-name: (contract-of nft-contract), id: id})) ERRR_UNLIST_FAILED)
-  (asserts! (is-eq tx-sender contract-owner) ERR_NOT_OWNER)
-   (unwrap!  (transfer-back-to-owner nft-contract id (get artist get-list)) ERR_FAILED) 
-       (map-delete Collections {nft-name: (contract-of nft-contract),id: id})
-       (map-delete nft-for-sale {nft-name: (contract-of nft-contract),id: id})
-         (ok 
+     (asserts! (is-eq tx-sender contract-owner) ERR_NOT_OWNER)
+       (unwrap!  (transfer-back-to-owner nft-contract id (get artist get-list)) ERR_FAILED) 
+          (map-delete Collections {nft-name: (contract-of nft-contract),id: id})
+             (map-delete nft-for-sale {nft-name: (contract-of nft-contract),id: id})
+             (ok 
               {
                 type: "Admin-unlist",
                 event: "successful"
               }
         
-      )
+            )
 
   )
 )
