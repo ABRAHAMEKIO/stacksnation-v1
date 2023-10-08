@@ -1,7 +1,5 @@
 # stacksnation-v1
 
-![marketplace](stacksnation.png)
-
 <p align="center">
-  <img width="460" height="300" src="stacksnation.png">
+  <img width="374" height="295" src="stacksnation.png">
 </p>
